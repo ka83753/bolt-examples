@@ -1,15 +1,10 @@
 # Demonstrating the Puppet Bolt automation journey with NTP
 
 Perform these preparatory steps first for this demo:
-* Spin up a Windows VM and ensure you can reach it via WinRM (run `winrm quickconfig` if needed)
-* Ensure Guest time synchronization (through VirtualBox or VMware Fusion) is disabled for this VM.
-* Change the Win32Time settings to sync to a non-existing server:<br/>
-  `w32tm /config /update /manualpeerlist:"i.dont.exist"`<br/>
-  (You will need to re-run this command before a new demo to get back to the initial demo state)
 * Install the Puppet Agent (for speed during the demo), but change the puppet agent configuration to point to a non-existing master and stop the puppet and pxp-agent services.<br/>
 (You will need to redo this before a new demo to get back to the initial demo state)
 * Clone this repo into a demo folder:<br/>
-  `git clone https://github.com/kreeuwijk/bolt-timesync`
+  `git clone https://github.com/ka83753/bolt-examples`
 * Update the `Boltdir/inventory.yaml` file:
     * Update the IP address to the IP of your Windows VM
     * Update the username & password for the WinRM credentials you're using
