@@ -205,37 +205,32 @@ ssh-copy-id
 
 # Commands
 # --------
-/opt/puppetlabs/puppet/bin/bolt command run uptime --nodes kanode1,kanode2 --user root
+/opt/puppetlabs/puppet/bin/bolt command run uptime --nodes node1,node2 --user root
 
 # Scripts
 # -------
-/opt/puppetlabs/puppet/bin/bolt script run bashcheck -n kanode1,kanode2 --user root
+/opt/puppetlabs/puppet/bin/bolt script run bashcheck -n node1,node2 --user root
 
 # Tasks
-# -----
-mkdir -p /etc/puppetlabs/code/environments/production/modules/ka_tasks/tasks
-cat > /etc/puppetlabs/code/environments/production/modules/ka_tasks/tasks/init.sh <<EOF
+Create <module>/tasks directory
+Create init.sh within tasks directory, e.g.
 #!/bin/sh
 
 echo $(hostname) received the message: $PT_message
-EOF
 
-/opt/puppetlabs/puppet/bin/bolt task run ka_tasks message=hello --nodes kanode1,kanode2 --user root --modulepath /etc/puppetlabs/code/environments/production/modules
+# To run
+/opt/puppetlabs/puppet/bin/bolt task run <module> message=hello --nodes node1,node2 --user root --modulepath /etc/puppetlabs/code/environments/production/modules
 
-mkdir -p ~/.puppetlabs
-cd ~/.puppetlabs
-
-git clone https://github.com/puppetlabs/task-modules.git
-cat >> bolt.yaml
+# Create bolt.yaml
 ---
 modulepath: "~/.puppetlabs/task-modules/site:~/.puppetlabs/task-modules/modules"
 # If you have to pass --no-host-key-check to skip host key verification you can
 # uncomment these lines.
 #ssh:
 #  host-key-check: false
-EOF
 
-/opt/puppetlabs/puppet/bin/bolt task run install_puppet -n kanode2 --user root
+# Other examples
+/opt/puppetlabs/puppet/bin/bolt task run install_puppet -n node2 --user root
 
 /opt/puppetlabs/puppet/bin/bolt task show
 
@@ -244,32 +239,7 @@ EOF
 cd ~/.puppetlabs/task-modules
 r10k puppetfile install ./Puppetfile
 
-/opt/puppetlabs/puppet/bin/bolt task run package action=status name=bash --nodes kanode1,kanode2 --user root
+/opt/puppetlabs/puppet/bin/bolt task run package action=status name=bash --nodes node1,node2 --user root
 
-mkdir -p /etc/puppetlabs/code/environments/production/modules/test_module/tasks
-cat > test_message.sh <<EOF
-#!/bin/sh
-
-if [ -z "$PT_message" ]; then
-  message=$PT_message
-else
-  message='Default Message'
-fi
-
-echo $(hostname) received the message: $PT_message
-EOF
-
-cat > test_message.json <<EOF
-{
-  "puppet_task_version": 1,
-  "description": "Print Message",
-  "supports_noop": false,
-  "input_method": "environment",
-  "parameters": {
-    "message": {
-      "description": "Message to print",
-      "type": "String"
-    }
-  }
-}
-EOF
+Create Boltdir/modules/bolt_demo/tasks/create_message.sh
+Create Boltdir/modules/bolt_demo/tasks/create_message.json
