@@ -194,3 +194,82 @@ Yep the output shows 4 NTP servers all configured correctly. We have now automat
 34) This works for tasks and plans too:<br/>
 `bolt plan run --node pcp://winnode1.puppet.vm tools::timesync_code`
 35) Show how the results of the plan appear in the PE console, Tasks section, Plans tab.
+
+
+# Install
+# -------
+yum install -y make gcc ruby-devel
+/opt/puppetlabs/puppet/bin/gem install bolt
+ssh-keygen
+ssh-copy-id
+
+# Commands
+# --------
+/opt/puppetlabs/puppet/bin/bolt command run uptime --nodes kanode1,kanode2 --user root
+
+# Scripts
+# -------
+/opt/puppetlabs/puppet/bin/bolt script run bashcheck -n kanode1,kanode2 --user root
+
+# Tasks
+# -----
+mkdir -p /etc/puppetlabs/code/environments/production/modules/ka_tasks/tasks
+cat > /etc/puppetlabs/code/environments/production/modules/ka_tasks/tasks/init.sh <<EOF
+#!/bin/sh
+
+echo $(hostname) received the message: $PT_message
+EOF
+
+/opt/puppetlabs/puppet/bin/bolt task run ka_tasks message=hello --nodes kanode1,kanode2 --user root --modulepath /etc/puppetlabs/code/environments/production/modules
+
+mkdir -p ~/.puppetlabs
+cd ~/.puppetlabs
+
+git clone https://github.com/puppetlabs/task-modules.git
+cat >> bolt.yaml
+---
+modulepath: "~/.puppetlabs/task-modules/site:~/.puppetlabs/task-modules/modules"
+# If you have to pass --no-host-key-check to skip host key verification you can
+# uncomment these lines.
+#ssh:
+#  host-key-check: false
+EOF
+
+/opt/puppetlabs/puppet/bin/bolt task run install_puppet -n kanode2 --user root
+
+/opt/puppetlabs/puppet/bin/bolt task show
+
+/opt/puppetlabs/puppet/bin/gem install r10k
+
+cd ~/.puppetlabs/task-modules
+r10k puppetfile install ./Puppetfile
+
+/opt/puppetlabs/puppet/bin/bolt task run package action=status name=bash --nodes kanode1,kanode2 --user root
+
+mkdir -p /etc/puppetlabs/code/environments/production/modules/test_module/tasks
+cat > test_message.sh <<EOF
+#!/bin/sh
+
+if [ -z "$PT_message" ]; then
+  message=$PT_message
+else
+  message='Default Message'
+fi
+
+echo $(hostname) received the message: $PT_message
+EOF
+
+cat > test_message.json <<EOF
+{
+  "puppet_task_version": 1,
+  "description": "Print Message",
+  "supports_noop": false,
+  "input_method": "environment",
+  "parameters": {
+    "message": {
+      "description": "Message to print",
+      "type": "String"
+    }
+  }
+}
+EOF
