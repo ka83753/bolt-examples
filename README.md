@@ -1,4 +1,4 @@
-# Demonstrating the Puppet Bolt automation journey with NTP
+# Some examples demonstrating Puppet Bolt
 
 Perform these preparatory steps first for this demo:
 * Install the Puppet Agent (for speed during the demo), but change the puppet agent configuration to point to a non-existing master and stop the puppet and pxp-agent services.<br/>
