@@ -1,0 +1,12 @@
+{
+  "puppet_task_version": 1,
+  "description": "Print Message",
+  "supports_noop": false,
+  "input_method": "environment",
+  "parameters": {
+    "message": {
+      "description": "Message to print",
+      "type": "String"
+    }
+  }
+}
