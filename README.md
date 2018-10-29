@@ -6,8 +6,8 @@ Perform these preparatory steps first for this demo:
 * Clone this repo into a demo folder:<br/>
   `git clone https://github.com/ka83753/bolt-examples`
 * Update the `Boltdir/inventory.yaml` file:
-    * Update the IP address to the IP of your Windows VM
-    * Update the username & password for the WinRM credentials you're using
+    * Update the IP address to the IP of your VMs
+    * Update the username & password for the credentials you're using
 
 <br/>**To enable the later part of the demo where you integrate with PE, follow these steps**
 * Update the `Boltdir/bolt.yaml` file:
