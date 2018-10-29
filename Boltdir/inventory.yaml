@@ -1,10 +1,9 @@
 groups:
-  - name: winnode1
+  - name: aws
     nodes:
-      - 172.16.219.20
+      - 18.130.104.250
+      - 35.177.58.51
     config:
-      transport: winrm
+      transport: ssh
       winrm:
-        user: vagrant
-        password: vagrant
-        ssl: false
+        user: keith
