@@ -199,17 +199,17 @@ Yep the output shows 4 NTP servers all configured correctly. We have now automat
 # Install
 # -------
 yum install -y make gcc ruby-devel
-/opt/puppetlabs/puppet/bin/gem install bolt
+/opt/puppetlabs/bin/gem install bolt
 ssh-keygen
 ssh-copy-id
 
 # Commands
 # --------
-/opt/puppetlabs/puppet/bin/bolt command run uptime --nodes node1,node2 --user root
+/opt/puppetlabs/bin/bolt command run uptime --nodes node1,node2 --user root
 
 # Scripts
 # -------
-/opt/puppetlabs/puppet/bin/bolt script run bashcheck -n node1,node2 --user root
+/opt/puppetlabs/bin/bolt script run bashcheck -n node1,node2 --user root
 
 # Tasks
 Create <module>/tasks directory
@@ -219,7 +219,7 @@ Create init.sh within tasks directory, e.g.
 echo $(hostname) received the message: $PT_message
 
 # To run
-/opt/puppetlabs/puppet/bin/bolt task run <module> message=hello --nodes node1,node2 --user root --modulepath /etc/puppetlabs/code/environments/production/modules
+/opt/puppetlabs/bin/bolt task run <module> message=hello --nodes node1,node2 --user root --modulepath /etc/puppetlabs/code/environments/production/modules
 
 # Create bolt.yaml
 ---
@@ -230,16 +230,16 @@ modulepath: "~/.puppetlabs/task-modules/site:~/.puppetlabs/task-modules/modules"
 #  host-key-check: false
 
 # Other examples
-/opt/puppetlabs/puppet/bin/bolt task run install_puppet -n node2 --user root
+/opt/puppetlabs/bin/bolt task run install_puppet -n node2 --user root
 
-/opt/puppetlabs/puppet/bin/bolt task show
+/opt/puppetlabs/bin/bolt task show
 
-/opt/puppetlabs/puppet/bin/gem install r10k
+/opt/puppetlabs/bin/gem install r10k
 
 cd ~/.puppetlabs/task-modules
 r10k puppetfile install ./Puppetfile
 
-/opt/puppetlabs/puppet/bin/bolt task run package action=status name=bash --nodes node1,node2 --user root
+/opt/puppetlabs/bin/bolt task run package action=status name=bash --nodes node1,node2 --user root
 
 Create Boltdir/modules/bolt_demo/tasks/create_message.sh
 Create Boltdir/modules/bolt_demo/tasks/create_message.json
