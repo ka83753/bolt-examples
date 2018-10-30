@@ -1,5 +1,4 @@
-* Some examples demonstrating Puppet Bolt
-
+# Some examples demonstrating Puppet Bolt
 
 * bolt command run uptime --nodes aws --no-host-key-check
 
