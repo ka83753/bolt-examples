@@ -1,9 +1,20 @@
 groups:
-  - name: aws
+  - name: aws_linux
     nodes:
       - 18.130.104.250
       - 35.177.58.51
     config:
       transport: ssh
-      winrm:
+      ssh:
         user: keith
+        host-key-check: false
+  - name: aws_windows
+    nodes:
+      - 192.168.110.10
+      - 192.168.110.20
+    config:
+      transport: winrm
+      winrm:
+        user: vagrant
+        password: vagrant
+        ssl: false
