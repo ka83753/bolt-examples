@@ -1,6 +1,6 @@
 {
   "puppet_task_version": 1,
-  "description": "Print Message",
+  "description": "Print Message to STDOUT",
   "supports_noop": false,
   "input_method": "environment",
   "parameters": {
